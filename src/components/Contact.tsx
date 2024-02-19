@@ -1,9 +1,8 @@
-import React from "react";
 import logo from "../assets/favicon.png";
 
-type Props = {};
 
-const Contact = (props: Props) => {
+
+const Contact = () => {
 
   return (
     <div id="contact" className="p-4 py-20 relative">

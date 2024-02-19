@@ -1,14 +1,7 @@
 import Logo from "../assets/LogoGroup.png";
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 
-type Props = {};
-
-const HeroHeader = (props: Props) => {
-  const [defaultTime, setDefaultTime] = useState({
-    day: 24,
-    month: 3,
-    year: 2024,
-  });
+const HeroHeader = () => {
   const [time, setTime] = useState<any>({});
 
   const TimeRemove = () => {

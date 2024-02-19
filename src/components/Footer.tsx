@@ -1,8 +1,7 @@
 import Logo from "../assets/LogoGroup.png";
 
-type Props = {};
 
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer className="bg-[#313C49]  py-8">
       <div className="container px-4 max-w-4xl mx-auto py-4 flex justify-between">
