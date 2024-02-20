@@ -1,41 +1,20 @@
-@import url("https://fonts.googleapis.com/css2?family=Anta&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: "Anta", sans-serif !important;
+  font-family: "Inter", sans-serif;
+}
+
+.btn {
+}
+.btn:hover div span {
+  transform: translateX(2px);
+  fill: gold;
 }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.anim-a {
-  animation: anim-a 15s linear infinite;
-}
-.anim-b {
-  animation: anim-a 15s linear infinite;
-}
-* {
-  scroll-behavior: smooth;
-}
-
-@keyframes anim-a {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes anim-b {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-360deg);
-  }
-}
