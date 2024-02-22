@@ -1,68 +1,192 @@
 import LogoGroup from "./assets/LogoGroup.png";
 
+import { useState, useRef, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { InfoData } from "./data/InfoData";
+
 function App() {
+  const [info, setInfo] = useState([]);
+  const snif = useRef<any | null>(null);
+  const name = useRef<any | null>(null);
+  const maktab = useRef<any | null>(null);
+  const tel = useRef<any | null>(null);
+
+  const [errName, setErrName] = useState(false);
+  const [errMaktab, setErrMaktab] = useState(false);
+  const [errSinf, setErrSinf] = useState(false);
+  const [errTel, setErrTel] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("https://bmschool.pythonanywhere.com/statistics/")
+      .then((res) => {
+        if (res.status == 200) {
+          setInfo(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const data = {
+      name: name.current.value,
+      maktab: maktab.current.value,
+      sinf: snif.current.value,
+      phone: tel.current.value,
+    };
+    setErrName(data.name === "");
+    setErrMaktab(data.maktab === "");
+    setErrSinf(data.sinf === "0");
+    setErrTel(data.phone === "");
+
+
+    if (
+      data.name === "" ||
+      data.maktab === "" ||
+      data.sinf == "0" ||
+      data.phone === ""
+    ) {
+      setErrName(name.current.value === "");
+      setErrMaktab(maktab.current.value === "");
+      setErrSinf(snif.current.value === "0");
+      setErrTel(tel.current.value === "");
+    } else {
+      axios
+        .post("https://bmschool.pythonanywhere.com/contact/", {
+          full_name: data.name,
+          group: data.sinf,
+          school: data.maktab,
+          phone_number: data.phone,
+        })
+        .then((res) => {
+          if (res.status == 201) {
+            toast.success("Ro'yhatdan o'tdingiz.", {
+              position: "top-center",
+            });
+            name.current.value = "";
+            maktab.current.value = "";
+            snif.current.value = "0";
+            tel.current.value = "";
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <>
-      <main className="bg-[#2F3A47] ">
-        <div className="container px-4 mx-auto py-12  min-h-screen flex flex-col-reverse lg:flex-row justify-between items-center gap-12 lg:gap-28">
-          <article className="w-full lg:w-[30%]">
+      <main className="bg-gradient-to-r from-[#2F3A47] to-[#364250E5]">
+        <div className="container max-w-7xl px-4 mx-auto py-6  min-h-screen flex flex-col-reverse lg:flex-row justify-between items-center gap-6 lg:gap-10">
+          <form onSubmit={handleSubmit} className="w-full lg:w-[30%]">
             <div>
               <img
                 src={LogoGroup}
                 alt="Boborahim Mashrab Maktabi "
-                className="w-full object-cover hidden lg:block"
+                className="h-16 object-cover hidden lg:block"
               />
             </div>
             <div className="mt-12 flex flex-col gap-5">
               <div>
-                <label htmlFor="" className="text-gray-200 mb-1 block ml-1">
+                <label
+                  htmlFor="name"
+                  className={`text-gray-200 mb-1 block ml-1 ${
+                    errName ? "text-red-400" : ""
+                  }`}
+                >
                   Ism Familiya
                 </label>
                 <input
+                  ref={name}
+                  name="name"
                   type="text"
+                  id="name"
                   placeholder="Ism Familiya"
-                  className="p-2 px-3 w-full text-sm rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300"
+                  className={`p-3 px-3 w-full text-sm rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300 ${
+                    errName ? "placeholder-red-400" : ""
+                  }`}
                 />
               </div>
               <div>
-                <label htmlFor="" className="text-gray-200 mb-1 block ml-1">
+                <label
+                  htmlFor="maktab"
+                  className={`text-gray-200 mb-1 block ml-1 ${
+                    errMaktab ? "text-red-400" : ""
+                  }`}
+                >
                   Maktab
                 </label>
                 <input
+                  ref={maktab}
+                  name="maktab"
+                  id="maktab"
                   type="text"
                   placeholder="Maktab"
-                  className="p-2 px-3 w-full text-sm rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300"
+                  className={`p-3 px-3 w-full text-sm rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300 ${
+                    errMaktab ? "placeholder-red-400" : ""
+                  }`}
                 />
               </div>
               <div>
-                <label htmlFor="" className="text-gray-200 mb-1 block ml-1">
+                <label
+                  htmlFor="snif"
+                  className={`text-gray-200 mb-1 block ml-1 ${
+                    errSinf ? "text-red-400" : ""
+                  }`}
+                >
                   Sinf
                 </label>
-                <select className="p-2 px-3 text-sm w-full rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300">
-                  <option value="">Sinfingizni tanlang!</option>
-                  <option value="">3-sinf</option>
-                  <option value="">4-sinf</option>
-                  <option value="">5-sinf</option>
-                  <option value="">6-sinf</option>
-                  <option value="">7-sinf</option>
-                  <option value="">8-sinf</option>
-                  <option value="">9-sinf</option>
-                  <option value="">10-sinf</option>
-                  <option value="">11-sinf</option>
+                <select
+                  name="snif"
+                  ref={snif}
+                  id="snif"
+                  className={`p-3 px-3 text-sm w-full rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300 ${
+                    errSinf ? "placeholder-red-400" : ""
+                  }`}
+                >
+                  <option value={"0"}>Sinfingizni tanlang!</option>
+                  {info
+                    .filter(
+                      (fil: any, id: number) =>
+                        fil.aplications_count != InfoData[id].total
+                    )
+                    .map((item: any, id) => {
+                      return (
+                        <option key={id} value={item.class_number}>
+                          {item.class_number}-Sinf
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div>
-                <label htmlFor="" className="text-gray-200 mb-1 block ml-1">
+                <label
+                  htmlFor="tel"
+                  className={`text-gray-200 mb-1 block ml-1 ${
+                    errTel ? "text-red-400" : ""
+                  }`}
+                >
                   Telefon raqam
                 </label>
                 <input
-                  type="text"
-                  defaultValue={"+998"}
-                  className="p-2 px-3 w-full text-sm rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300"
+                  ref={tel}
+                  name="tel"
+                  id="tel"
+                  type="tel"
+                  placeholder="+998 90 123 45 67"
+                  className={`p-3 px-3 w-full text-sm rounded-full bg-[#515a66e5] outline-none text-white active:bg-[#DEEDFF] hover:bg-[#DEEDFF] active:text-gray-700 hover:text-gray-700 duration-300 ${
+                    errTel ? "placeholder-red-400" : ""
+                  }`}
                 />
               </div>
               <div className="mt-4">
-                <button className="p-2 px-5 w-full btn rounded-full hover:bg-[#1F436D] hover:text-white outline-none text-[#2F3A47] bg-[#DEEDFF] duration-300 flex gap-5 justify-between items-center active:scale-95 ">
+                <button className="p-3 px-5 w-full btn rounded-full hover:bg-[#1F436D] hover:text-white outline-none text-[#2F3A47] bg-[#DEEDFF] duration-300 flex gap-5 justify-between items-center active:scale-95 ">
                   <span>Ro'yhatdan O'tish</span>
                   <div className=" w-6 overflow-hidden ">
                     <span className="flex gap-2 w-12 translate-x-[-26px]  duration-500 relative">
@@ -90,24 +214,94 @@ function App() {
                   </div>
                 </button>
               </div>
+              <article className="w-full mt-10  flex lg:w-[30%]  flex-col gap-4 lg:hidden">
+                <h1 className="text-white italic font-light mb-1">
+                  Qolgan o'rinlar soni:{" "}
+                </h1>
+                {info?.map((item: any, i) => {
+                  let foiz: any = Math.round(
+                    (100 * item.aplications_count) / 30
+                  );
+
+                  return (
+                    <div key={i} className="flex flex-col gap-1">
+                      <div className="flex justify-between gap-2 items-center">
+                        <span className="text-white text-sm">
+                          {item?.class_number}-sinf
+                        </span>
+                        <span className="text-white text-sm">
+                          {item.aplications_count}/{InfoData[i].total}
+                        </span>
+                      </div>
+                      <div className="overflow-hidden bg-gray-500 h-1.5 rounded-full w-full">
+                        <span
+                          className={`h-full bg-gray-200  block rounded-full w-[0%]`}
+                          style={{ width: `${foiz}%` }}
+                        ></span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </article>
             </div>
-          </article>
+          </form>
           <article className="w-full lg:w-[70%]">
             <img
               src={LogoGroup}
               alt="Boborahim Mashrab Maktabi "
               className="w-full object-cover  lg:hidden mb-10"
             />
-            <h1 className="text-xl text-white text-center">
+            <h1
+              style={{ lineHeight: "1.5" }}
+              className="text-md text-white text-center lg:text-left lg:text-xl font-light"
+            >
               Namangan viloyatida ilk marotaba umumiy o'rta ta'lim maktab
-              o'quvchilari uchun an'anaviy olimpiadasi tashkil etilmoqda.
+              o'quvchilari uchun an'anaviy
+              <span className="uppercase  px-1 inline-block text-[#FBB90F]">
+                " BM Matematika "
+              </span>
+              olimpiadasi tashkil etilmoqda.
             </h1>
-            <div
-              className={`bg-[url('./assets/bm.png')] h-[400px] mt-12 lg:mt-20 object-cover bg-cover rounded-[50px] overflow-hidden`}
-            ></div>
+            <div className="flex flex-col mt-14 lg:mt-20 gap-5 lg:flex-row">
+              <div
+                className={`bg-[url('./assets/bm2.png')] h-[300px] w-full lg:w-[70%] bg-center lg:h-[420px]   object-cover bg-cover rounded-[30px] overflow-hidden`}
+              ></div>
+              <article className="w-full hidden lg:flex lg:w-[30%]  flex-col gap-3">
+                <h1 className="text-white italic font-light mb-1">
+                  Qolgan o'rinlar soni:{" "}
+                </h1>
+
+                {info?.map((item: any, i) => {
+                  let foiz: any = Math.round(
+                    (100 * item.aplications_count) / 30
+                  );
+
+                  return (
+                    <div key={i} className="flex flex-col gap-1">
+                      <div className="flex justify-between gap-2 items-center">
+                        <span className="text-white text-sm">
+                          {item?.class_number}-sinf
+                        </span>
+                        <span className="text-white text-sm">
+                          {item.aplications_count}/{InfoData[i].total}
+                        </span>
+                      </div>
+                      <div className="overflow-hidden bg-gray-500 h-1.5 rounded-full w-full">
+                        <span
+                          className={`h-full bg-gray-200  block rounded-full w-[0%]`}
+                          style={{ width: `${foiz}%` }}
+                        ></span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </article>
+            </div>
           </article>
         </div>
       </main>
+
+      <ToastContainer />
     </>
   );
 }
