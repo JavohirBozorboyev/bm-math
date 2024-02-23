@@ -249,7 +249,7 @@ function App() {
             <img
               src={LogoGroup}
               alt="Boborahim Mashrab Maktabi "
-              className="w-full object-cover  lg:hidden mb-10"
+              className=" object-cover h-20  mx-auto lg:hidden mb-10"
             />
             <h1
               style={{ lineHeight: "1.5" }}
