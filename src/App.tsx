@@ -82,6 +82,8 @@ function App() {
     }
   };
 
+  console.log("Bozorboyev Javohir");
+
   return (
     <>
       <main className="bg-gradient-to-r from-[#2F3A47] to-[#364250E5]">
