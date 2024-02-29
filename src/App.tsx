@@ -44,7 +44,6 @@ function App() {
     setErrSinf(data.sinf === "0");
     setErrTel(data.phone === "");
 
-
     if (
       data.name === "" ||
       data.maktab === "" ||
@@ -79,6 +78,8 @@ function App() {
         });
     }
   };
+
+  console.log(info, InfoData);
 
   return (
     <>
@@ -153,8 +154,8 @@ function App() {
                   <option value={"0"}>Sinfingizni tanlang!</option>
                   {info
                     .filter(
-                      (fil: any, id: number) =>
-                        fil.aplications_count != InfoData[id].total
+                      (fil: any, i: number) =>
+                        fil.aplications_count < InfoData[i].total
                     )
                     .map((item: any, id) => {
                       return (
@@ -220,7 +221,7 @@ function App() {
                 </h1>
                 {info?.map((item: any, i) => {
                   let foiz: any = Math.round(
-                    (100 * item.aplications_count) / 30
+                    (100 * item.aplications_count) / InfoData[i].total
                   );
 
                   return (
@@ -273,7 +274,7 @@ function App() {
 
                 {info?.map((item: any, i) => {
                   let foiz: any = Math.round(
-                    (100 * item.aplications_count) / 30
+                    (100 * item.aplications_count) / InfoData[i].total
                   );
 
                   return (
@@ -288,7 +289,7 @@ function App() {
                       </div>
                       <div className="overflow-hidden bg-gray-500 h-1.5 rounded-full w-full">
                         <span
-                          className={`h-full bg-gray-200  block rounded-full w-[0%]`}
+                          className={`h-full bg-gray-200  block rounded-full `}
                           style={{ width: `${foiz}%` }}
                         ></span>
                       </div>
