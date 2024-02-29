@@ -16,6 +16,7 @@ function App() {
   const [errMaktab, setErrMaktab] = useState(false);
   const [errSinf, setErrSinf] = useState(false);
   const [errTel, setErrTel] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     axios
@@ -55,6 +56,7 @@ function App() {
       setErrSinf(snif.current.value === "0");
       setErrTel(tel.current.value === "");
     } else {
+      setLoading(true);
       axios
         .post("https://bmschool.pythonanywhere.com/contact/", {
           full_name: data.name,
@@ -71,6 +73,7 @@ function App() {
             maktab.current.value = "";
             snif.current.value = "0";
             tel.current.value = "";
+            setLoading(false);
           }
         })
         .catch((err) => {
@@ -79,7 +82,7 @@ function App() {
     }
   };
 
-  console.log(info, InfoData);
+  console.log(loading);
 
   return (
     <>
@@ -187,33 +190,44 @@ function App() {
                 />
               </div>
               <div className="mt-4">
-                <button className="p-3 px-5 w-full btn rounded-full hover:bg-[#1F436D] hover:text-white outline-none text-[#2F3A47] bg-[#DEEDFF] duration-300 flex gap-5 justify-between items-center active:scale-95 ">
-                  <span>Ro'yhatdan O'tish</span>
-                  <div className=" w-6 overflow-hidden ">
-                    <span className="flex gap-2 w-12 translate-x-[-26px]  duration-500 relative">
-                      <svg
-                        width="24"
-                        height="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        className="scale-[0.6] fill-white duration-500"
-                      >
-                        <path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z" />
-                      </svg>
-                      <svg
-                        width="24"
-                        height="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        className="scale-[0.6] fill-[#2F3A47] duration-500 block "
-                      >
-                        <path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z" />
-                      </svg>
-                    </span>
-                  </div>
-                </button>
+                {loading ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="p-3 px-5 w-full btn rounded-full scale-95 outline-none text-[#2F3A47] bg-[#DEEDFF] duration-300 "
+                  >
+                    <span>Malumotlar jo'natilmoqda...</span>
+                    <div className=" w-6 overflow-hidden "></div>
+                  </button>
+                ) : (
+                  <button className="p-3 px-5 w-full btn rounded-full hover:bg-[#1F436D] hover:text-white outline-none text-[#2F3A47] bg-[#DEEDFF] duration-300 flex gap-5 justify-between items-center active:scale-95 ">
+                    <span>Ro'yhatdan O'tish</span>
+                    <div className=" w-6 overflow-hidden ">
+                      <span className="flex gap-2 w-12 translate-x-[-26px]  duration-500 relative">
+                        <svg
+                          width="24"
+                          height="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          className="scale-[0.6] fill-white duration-500"
+                        >
+                          <path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z" />
+                        </svg>
+                        <svg
+                          width="24"
+                          height="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          className="scale-[0.6] fill-[#2F3A47] duration-500 block "
+                        >
+                          <path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z" />
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
+                )}
               </div>
               <article className="w-full mt-10  flex lg:w-[30%]  flex-col gap-4 lg:hidden">
                 <h1 className="text-white italic font-light mb-1">
