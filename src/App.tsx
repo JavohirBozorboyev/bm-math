@@ -82,8 +82,6 @@ function App() {
     }
   };
 
-  console.log(loading);
-
   return (
     <>
       <main className="bg-gradient-to-r from-[#2F3A47] to-[#364250E5]">
