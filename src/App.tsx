@@ -18,19 +18,6 @@ function App() {
   const [errTel, setErrTel] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get("https://bmschool.pythonanywhere.com/statistics/")
-      .then((res) => {
-        if (res.status == 200) {
-          setInfo(res.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -81,6 +68,18 @@ function App() {
         });
     }
   };
+  useEffect(() => {
+    axios
+      .get("https://bmschool.pythonanywhere.com/statistics/")
+      .then((res) => {
+        if (res.status == 200) {
+          setInfo(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [handleSubmit]);
 
   console.log("Bozorboyev Javohir");
 
