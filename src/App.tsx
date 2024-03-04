@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { InfoData } from "./data/InfoData";
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 function App() {
   const [info, setInfo] = useState([]);
@@ -79,23 +81,23 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+    AOS.init({ duration: 2000 });
   }, [handleSubmit]);
-
-  console.log("Bozorboyev Javohir");
 
   return (
     <>
-      <main className="bg-gradient-to-r from-[#2F3A47] to-[#364250E5]">
+      <main className="bg-gradient-to-r from-[#2F3A47] to-[#364250E5] overflow-hidden">
         <div className="container max-w-7xl px-4 mx-auto py-6  min-h-screen flex flex-col-reverse lg:flex-row justify-between items-center gap-6 lg:gap-10">
           <form onSubmit={handleSubmit} className="w-full lg:w-[30%]">
             <div>
               <img
+                data-aos={"fade-down"}
                 src={LogoGroup}
                 alt="Boborahim Mashrab Maktabi "
-                className="h-16 object-cover hidden lg:block"
+                className="h-16 object-cover hidden lg:block fade-up"
               />
             </div>
-            <div className="mt-12 flex flex-col gap-5">
+            <div data-aos={"fade-up"} className="mt-12 flex flex-col gap-5">
               <div>
                 <label
                   htmlFor="name"
@@ -228,8 +230,11 @@ function App() {
                   </button>
                 )}
               </div>
-              <article className="w-full mt-10  flex lg:w-[30%]  flex-col gap-4 lg:hidden">
-                <h1 className="text-white italic font-light mb-1">
+              <article className="w-full mt-10  pb-20 flex lg:w-[30%]  flex-col gap-4 lg:hidden">
+                <h1
+                  data-aos="fade-right"
+                  className="text-white italic font-light mb-1"
+                >
                   Qolgan o'rinlar soni:{" "}
                 </h1>
                 {info?.map((item: any, i) => {
@@ -238,7 +243,11 @@ function App() {
                   );
 
                   return (
-                    <div key={i} className="flex flex-col gap-1">
+                    <div
+                      data-aos="fade-left"
+                      key={i}
+                      className="flex flex-col gap-1"
+                    >
                       <div className="flex justify-between gap-2 items-center">
                         <span className="text-white text-sm">
                           {item?.class_number}-sinf
@@ -261,11 +270,13 @@ function App() {
           </form>
           <article className="w-full lg:w-[70%]">
             <img
+              data-aos="fade-down"
               src={LogoGroup}
               alt="Boborahim Mashrab Maktabi "
               className=" object-cover h-20  mx-auto lg:hidden mb-10"
             />
             <h1
+              data-aos="fade-down"
               style={{ lineHeight: "1.5" }}
               className="text-md text-white text-center lg:text-left lg:text-xl font-light"
             >
@@ -278,10 +289,17 @@ function App() {
             </h1>
             <div className="flex flex-col mt-14 lg:mt-20 gap-5 lg:flex-row">
               <div
+                data-aos="zoom-in-up"
                 className={`bg-[url('./assets/bm2.png')] h-[300px] w-full lg:w-[70%] bg-center lg:h-[420px]   object-cover bg-cover rounded-[30px] overflow-hidden`}
               ></div>
-              <article className="w-full hidden lg:flex lg:w-[30%]  flex-col gap-3">
-                <h1 className="text-white italic font-light mb-1">
+              <article
+                data-aos={"fade-up"}
+                className="w-full hidden lg:flex lg:w-[30%]  flex-col gap-3"
+              >
+                <h1
+                  data-aos={"fade-left"}
+                  className="text-white italic font-light mb-1"
+                >
                   Qolgan o'rinlar soni:{" "}
                 </h1>
 
