@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import LogoGroup from "./assets/LogoGroup.png";
 
 import { useState, useRef, useEffect } from "react";
@@ -14,61 +16,72 @@ function App() {
   const maktab = useRef<any | null>(null);
   const tel = useRef<any | null>(null);
 
-  const [errName, setErrName] = useState(false);
-  const [errMaktab, setErrMaktab] = useState(false);
-  const [errSinf, setErrSinf] = useState(false);
-  const [errTel, setErrTel] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [errName] = useState(false);
+  const [errMaktab] = useState(false);
+  const [errSinf] = useState(false);
+  const [errTel] = useState(false);
+  const [loading] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    toast.error("Ro'yhatdan o'tish 18-martda yakunlandi.", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
 
-    const data = {
-      name: name.current.value,
-      maktab: maktab.current.value,
-      sinf: snif.current.value,
-      phone: tel.current.value,
-    };
-    setErrName(data.name === "");
-    setErrMaktab(data.maktab === "");
-    setErrSinf(data.sinf === "0");
-    setErrTel(data.phone === "");
+      theme: "colored",
+    });
 
-    if (
-      data.name === "" ||
-      data.maktab === "" ||
-      data.sinf == "0" ||
-      data.phone === ""
-    ) {
-      setErrName(name.current.value === "");
-      setErrMaktab(maktab.current.value === "");
-      setErrSinf(snif.current.value === "0");
-      setErrTel(tel.current.value === "");
-    } else {
-      setLoading(true);
-      axios
-        .post("https://bmschool.pythonanywhere.com/contact/", {
-          full_name: data.name,
-          group: data.sinf,
-          school: data.maktab,
-          phone_number: data.phone,
-        })
-        .then((res) => {
-          if (res.status == 201) {
-            toast.success("Ro'yhatdan o'tdingiz.", {
-              position: "top-center",
-            });
-            name.current.value = "";
-            maktab.current.value = "";
-            snif.current.value = "0";
-            tel.current.value = "";
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    // const data = {
+    //   name: name.current.value,
+    //   maktab: maktab.current.value,
+    //   sinf: snif.current.value,
+    //   phone: tel.current.value,
+    // };
+    // setErrName(data.name === "");
+    // setErrMaktab(data.maktab === "");
+    // setErrSinf(data.sinf === "0");
+    // setErrTel(data.phone === "");
+
+    // if (
+    //   data.name === "" ||
+    //   data.maktab === "" ||
+    //   data.sinf == "0" ||
+    //   data.phone === ""
+    // ) {
+    //   setErrName(name.current.value === "");
+    //   setErrMaktab(maktab.current.value === "");
+    //   setErrSinf(snif.current.value === "0");
+    //   setErrTel(tel.current.value === "");
+    // } else {
+    //   setLoading(true);
+    //   axios
+    //     .post("https://bmschool.pythonanywhere.com/contact/", {
+    //       full_name: data.name,
+    //       group: data.sinf,
+    //       school: data.maktab,
+    //       phone_number: data.phone,
+    //     })
+    //     .then((res) => {
+    //       if (res.status == 201) {
+    //         toast.success("Ro'yhatdan o'tdingiz.", {
+    //           position: "top-center",
+    //         });
+    //         name.current.value = "";
+    //         maktab.current.value = "";
+    //         snif.current.value = "0";
+    //         tel.current.value = "";
+    //         setLoading(false);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
   };
   useEffect(() => {
     axios
